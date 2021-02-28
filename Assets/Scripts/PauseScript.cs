@@ -12,6 +12,8 @@ public class PauseScript : MonoBehaviour
     public Text pauseText;
     public GameObject pauseFirstButton, restartButton, menuButton, slider;
 
+    public float timer = 0;
+
     private bool gameOver = false;
     
     // Start is called before the first frame update
@@ -24,10 +26,12 @@ public class PauseScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !gameOver)
         {
             PauseGame();
         }
+
+        timer += Time.deltaTime;
     }
     public void PauseGame() //simple pause toggle
     {
@@ -41,6 +45,8 @@ public class PauseScript : MonoBehaviour
             pauseMenu.gameObject.SetActive(true);
             paused = true;
             Time.timeScale = 0;
+
+            pauseText.text = "Paused\nTime: " + Mathf.Round(timer) + " Seconds";
 
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(pauseFirstButton);
@@ -66,7 +72,7 @@ public class PauseScript : MonoBehaviour
         pauseFirstButton.gameObject.SetActive(false);
         menuButton.gameObject.SetActive(false);
         slider.gameObject.SetActive(false);
-        pauseText.text = "You Got Caught!";
+        pauseText.text = "You Got Caught!\nTime: " + Mathf.Round(timer) + " Seconds";
 
         //PauseGame();
         
@@ -84,7 +90,7 @@ public class PauseScript : MonoBehaviour
         pauseFirstButton.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(false);
         slider.gameObject.SetActive(false);
-        pauseText.text = "You Escaped!";
+        pauseText.text = "You Escaped!\nTime: " + Mathf.Round(timer) + " Seconds";
 
         pauseMenu.gameObject.SetActive(true);
         paused = true;
